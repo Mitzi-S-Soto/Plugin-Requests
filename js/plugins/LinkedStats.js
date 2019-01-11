@@ -1,21 +1,21 @@
 /*:
-* @plugindesc This plugin allows a user to modify stats on Classes based on other stats. For example,
-* raising maximum HP by a percentage of their defense.
+* @plugindesc This plugin allows a user to modify stats on Classes or Enemies based on other stats.
+* For example, raising maximum HP by a percentage of their defense.
 * @author Zevia
 *
-* @help In a class's note box, put <link firstStat: x secondStat>, where firstStat is
-* the stat you want to increase, secondStat is the stat you want to reference to
-* increase the first stat by, and x is the percentage you want to increase based
-* on the secondStat.
+* @help In a class or enemy's note box, put <link firstStat: x secondStat>,
+* where firstStat is the stat you want to increase, secondStat is the stat you
+* want to reference to increase the first stat by, and x is the percentage you
+* want to increase based on the secondStat.
 *
 * As an example, <link mhp: 50 def> would translate to "increase this class's
 * maximum hp by 50% of the class's defense".
 *
-* If you want to be able to define a class's entire stat in relation to another
-* stat, you can change the minimums of their stats. As an example, if you want
-* a class's maximum HP to be solely dependent on their DEF and LUK, you can
-* change the minimum HP parameter to 0, then do <link mhp: x def> and
-* <link mhp: x luk>
+* If you want to be able to define a class or enemy's entire stat in relation
+* to another stat, you can change the minimums of their stats. As an example,
+* if you want a class's maximum HP to be solely dependent on their DEF and
+* LUK, you can change the minimum HP parameter to 0, then do <link mhp: x def>
+* and <link mhp: x luk>
 *
 * @param mhp
 * @text HP minimum
