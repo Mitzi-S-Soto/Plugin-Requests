@@ -11,11 +11,15 @@
 * As an example, <link mhp: 50 def> would translate to "increase this class's
 * maximum hp by 50% of the class's defense".
 *
+* You can tie multiple stats to one stat by separating them with commas.
+* For example, <link mhp: 50 def, 40 luk> would mean, "increase this
+* class's maximum hp by 50% of the class's defense and 40% of the class's
+* luck".
+*
 * If you want to be able to define a class or enemy's entire stat in relation
 * to another stat, you can change the minimums of their stats. As an example,
 * if you want a class's maximum HP to be solely dependent on their DEF and
-* LUK, you can change the minimum HP parameter to 0, then do <link mhp: x def>
-* and <link mhp: x luk>
+* LUK, you can change the minimum HP parameter to 0, then do <link mhp: x def, y luk>
 *
 * @param mhp
 * @text HP minimum
@@ -90,25 +94,19 @@
         if (!meta || !params[paramId]) { return; }
 
         var regExp = new RegExp(LINK_MATCH + params[paramId], 'i');
-        var linkedStats = Object.keys(meta).filter(function(key) {
+        return meta[Object.keys(meta).find(function(key) {
             return key.match(regExp);
-        });
-        if (!linkedStats) { return; }
-
-        var ignored = new RegExp(LINK_MATCH + '|\\s+', 'ig');
-        return linkedStats.map(function(linkedStat) {
-            return meta[linkedStat];
-        });
+        })];
     };
 
     LinkedStats.getValues = function(values) {
         if (!values) { return; }
 
-        return values.map(function(value) {
+        return values.split(',').map(function(value) {
             var percentage = value.match(/\d+/);
             if (!percentage) { return; }
 
-            var linkedMatch = value.match(/[^\s+\d+]+/);
+            var linkedMatch = value.match(/[a-zA-Z]+/);
             if (!linkedMatch) { return; }
 
             var linkedStat = params.find(function(param) {
