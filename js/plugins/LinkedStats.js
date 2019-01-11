@@ -84,9 +84,10 @@
         if (isNaN(minimumParam)) {
             if (param === 'mmp') { paramMinimums[param] = 0; }
             else { paramMinimums[param] = 1; }
+        } else {
+            paramMinimums[param] = minimumParam;
         }
 
-        paramMinimums[param] = minimumParam;
         return paramMinimums;
     }, {});
 
