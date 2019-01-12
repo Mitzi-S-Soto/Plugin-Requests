@@ -73,6 +73,14 @@
 (function(module) {
     'use strict';
 
+    // Polyfill for older versions of RPG Maker MV
+    Array.prototype.find = Array.prototype.find || function(finderFunction) {
+        for (var i = 0; i < this.length; i++) {
+            var element = this[i];
+            if (finderFunction(element, i, this)) { return element; }
+        }
+    };
+    
     module.Zevia = module.Zevia || {};
     var LinkedStats = module.Zevia.LinkedStats = {};
     var LINK_MATCH = 'link\\s+';

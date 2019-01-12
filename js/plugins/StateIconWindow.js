@@ -52,6 +52,14 @@
 (function(module) {
     'use strict';
 
+    // Polyfill for older versions of RPG Maker MV
+    Array.prototype.find = Array.prototype.find || function(finderFunction) {
+        for (var i = 0; i < this.length; i++) {
+            var element = this[i];
+            if (finderFunction(element, i, this)) { return element; }
+        }
+    };
+
     module.Zevia = module.Zevia || {};
     var parameters = PluginManager.parameters('StateIconWindow');
     var iconWidth = parseInt(parameters.iconWidth);
