@@ -56,4 +56,25 @@
         SoundManager.playBuzzer();
         this._itemWindow.activate();
     };
+
+    PreventBlankEquip.clearEquipments = Game_Actor.prototype.clearEquipments;
+    Game_Actor.prototype.clearEquipments = function() {
+        var maxSlots = this.equipSlots().length;
+        for (var i = 0; i < maxSlots; i++) {
+            if (this.isEquipChangeOk(i) && !PreventBlankEquip.shouldPreventEquip(this, i)) {
+                this.changeEquip(i, null);
+            }
+        }
+    };
+
+    PreventBlankEquip.makeCommandList = Window_EquipCommand.prototype.makeCommandList;
+    Window_EquipCommand.prototype.makeCommandList = function() {
+        if (!shouldPreventAll) {
+            PreventBlankEquip.makeCommandList.call(this);
+            return;
+        }
+
+        this.addCommand(TextManager.equip2, 'equip');
+        this.addCommand(TextManager.optimize, 'optimize');
+    };
 })(window);
