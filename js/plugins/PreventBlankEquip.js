@@ -20,6 +20,9 @@
 * each slot ID. If you want to prevent unequipping without replacements for the
 * weapon and shield slot, you would put <preventBlankEquip: 0, 1>
 *
+* If the Prevent All Actors & Slots option is true, then the clear command will be
+* removed from the equip menu.
+*
 * @param shouldPreventAll
 * @text Prevent All Actors & Slots
 * @type boolean
