@@ -39,8 +39,7 @@
             return;
         }
 
-        var targetWindow = isForFriend ? this._actorWindow : this._enemyWindow;
-        targetWindow.activate();
+        activeWindow.activate();
     };
 
     SelectMultipleTargets.onEnemyOk = Scene_Battle.prototype.onEnemyOk;
