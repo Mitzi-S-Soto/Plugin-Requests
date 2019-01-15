@@ -46,29 +46,35 @@
 * @desc The variable used to store the index in the battle party or troop of the battler that just died.
 * @default 2
 *
+* @param targetStates
+* @text Target States Variable
+* @type number
+* @desc The variable used to store the list of states of the battler just before they died.
+* @default 3
+*
 * @param subjectId
 * @text Subject ID Variable
 * @type number
 * @desc The variable used to store the ID of the battler that just acted.
-* @default 3
+* @default 4
 *
 * @param subjectIndex
 * @text Subject Index Variable
 * @type number
 * @desc The variable used to store the index in the battle party or troop of the battler that just acted.
-* @default 4
-*
-* @param actionId
-* @text Last Action ID
-* @type number
-* @desc The variable used to store the ID of the last skill or item used before the battler died.
 * @default 5
 *
+* @param actionId
+* @text Last Action ID Variable
+* @type number
+* @desc The variable used to store the ID of the last skill or item used before the battler died.
+* @default 6
+*
 * @param actionType
-* @text Last Action Type
+* @text Last Action Type Variable
 * @type string
 * @desc The variable used to store the type of the last action used. Values are "skill" or "item".
-* @default 6
+* @default 7
 *
 * @param shouldRunAfterBattle
 * @text Run Common Events After Battle
@@ -88,6 +94,7 @@
     var enemyCommonEventId = parseInt(parameters.enemyCommonEventId);
     var targetId = parseInt(parameters.targetId);
     var targetIndex = parseInt(parameters.targetIndex);
+    var targetStates = parseInt(parameters.targetStates);
     var subjectId = parseInt(parameters.subjectId);
     var subjectIndex = parseInt(parameters.subjectIndex);
     var actionId = parseInt(parameters.actionId);
@@ -108,6 +115,7 @@
         var enemyMembers = $gameTroop.members();
         $gameVariables.setValue(targetId, (isActorDeath ? this._actorId : this._enemyId));
         $gameVariables.setValue(targetIndex, (isActorDeath ? partyBattleMembers.indexOf(this) : enemyMembers.indexOf(this)));
+        $gameVariables.setValue(targetStates, this._states);
         if (subject) {
             var isActorSubject = subject instanceof Game_Actor;
             $gameVariables.setValue(subjectId, (isActorSubject ? subject._actorId : subject._enemyId));
@@ -123,7 +131,7 @@
 
     DeathCommonEvent.die = Game_BattlerBase.prototype.die;
     Game_BattlerBase.prototype.die = function() {
-        DeathCommonEvent.die.call(this);
         this.executeDeathCommonEvents();
+        DeathCommonEvent.die.call(this);
     };
 })(window);
