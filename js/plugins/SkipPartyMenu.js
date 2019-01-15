@@ -12,6 +12,12 @@
 * @type boolean
 * @desc Whether the Escape command will be added to the actor's command list or not
 * @default true
+*
+* @param shouldDisablePartyMenu
+* @text Disable Party Menu
+* @type boolean
+* @desc Prevent the User from going back to the Fight/Escape menu by hitting the escape key.
+* @default true
 */
 
 (function(module) {
@@ -20,7 +26,9 @@
     module.Zevia = module.Zevia || {};
     var SkipPartyMenu = module.Zevia.SkipPartyMenu = {};
     var ESCAPE_SYMBOL = 'escape';
-    var isEscapeEnabled = !!PluginManager.parameters('SkipPartyMenu').isEscapeEnabled.match(/true/i);
+    var parameters = PluginManager.parameters('SkipPartyMenu');
+    var isEscapeEnabled = !!parameters.isEscapeEnabled.match(/true/i);
+    var shouldDisablePartyMenu = !!parameters.shouldDisablePartyMenu.match(/true/i);
 
     SkipPartyMenu.startBattlerInput = BattleManager.startInput;
     BattleManager.startInput = function() {
@@ -39,6 +47,24 @@
         });
     };
 
+    SkipPartyMenu.changeInputWindow = Scene_Battle.prototype.changeInputWindow;
+    Scene_Battle.prototype.changeInputWindow = function() {
+        if (!shouldDisablePartyMenu) {
+            SkipPartyMenu.changeInputWindow.call(this);
+            return;
+        }
+
+        if (BattleManager.isInputting()) {
+            if (!BattleManager.actor()) {
+                BattleManager._actorIndex = 0;
+                BattleManager.actor().setActionState('inputting');
+            }
+            this.startActorCommandSelection();
+        } else {
+            this.endCommandSelection();
+        }
+    };
+
     SkipPartyMenu.makeCommandList = Window_ActorCommand.prototype.makeCommandList;
     Window_ActorCommand.prototype.makeCommandList = function() {
         SkipPartyMenu.makeCommandList.call(this);
@@ -46,4 +72,10 @@
             this.addCommand(TextManager.escape, ESCAPE_SYMBOL, BattleManager.canEscape());
         }
     };
+
+    SkipPartyMenu.processCancel = Window_ActorCommand.prototype.processCancel;
+    Window_ActorCommand.prototype.processCancel = function() {
+        if (shouldDisablePartyMenu && BattleManager._actorIndex < 1) { return; }
+        SkipPartyMenu.processCancel.call(this);
+    }
 })(window);
