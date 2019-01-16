@@ -33,6 +33,8 @@
     SkipPartyMenu.startBattlerInput = BattleManager.startInput;
     BattleManager.startInput = function() {
         SkipPartyMenu.startBattlerInput.call(this);
+        if (BattleManager.isSTB && BattleManager.isSTB()) { return; }
+        
         BattleManager.selectNextCommand();
     };
 
