@@ -30,6 +30,15 @@
     var isEscapeEnabled = !!parameters.isEscapeEnabled.match(/true/i);
     var shouldDisablePartyMenu = !!parameters.shouldDisablePartyMenu.match(/true/i);
 
+    SkipPartyMenu.shouldPreventCancelMenu = function() {
+        return shouldDisablePartyMenu &&
+            (
+                BattleManager._actorIndex < 1 ||
+                (BattleManager.isSTB && BattleManager.isSTB()) ||
+                (BattleManager.isATB && BattleManager.isATB())
+            );
+    };
+
     SkipPartyMenu.startBattlerInput = BattleManager.startInput;
     BattleManager.startInput = function() {
         SkipPartyMenu.startBattlerInput.call(this);
@@ -80,7 +89,7 @@
 
     SkipPartyMenu.processCancel = Window_ActorCommand.prototype.processCancel;
     Window_ActorCommand.prototype.processCancel = function() {
-        if (shouldDisablePartyMenu && BattleManager._actorIndex < 1) { return; }
+        if (SkipPartyMenu.shouldPreventCancelMenu()) { return; }
         SkipPartyMenu.processCancel.call(this);
     };
 })(window);
