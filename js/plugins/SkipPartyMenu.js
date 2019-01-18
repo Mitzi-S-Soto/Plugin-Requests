@@ -34,7 +34,7 @@
     BattleManager.startInput = function() {
         SkipPartyMenu.startBattlerInput.call(this);
         if (BattleManager.isSTB && BattleManager.isSTB()) { return; }
-        
+
         BattleManager.selectNextCommand();
     };
 
@@ -45,7 +45,10 @@
 
         this._actorCommandWindow.setHandler(ESCAPE_SYMBOL, function() {
             BattleManager.actor()._actionState = '';
-            BattleManager.processEscape();
+            if (!BattleManager.processEscape() && BattleManager.isATB && BattleManager.isATB()) {
+                BattleManager._phase = 'atb';
+                SceneManager._scene._actorCommandWindow.deactivate();
+            }
         });
     };
 
@@ -79,5 +82,5 @@
     Window_ActorCommand.prototype.processCancel = function() {
         if (shouldDisablePartyMenu && BattleManager._actorIndex < 1) { return; }
         SkipPartyMenu.processCancel.call(this);
-    }
+    };
 })(window);
