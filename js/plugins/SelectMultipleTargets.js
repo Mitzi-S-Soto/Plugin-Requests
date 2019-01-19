@@ -26,7 +26,9 @@
         var action = BattleManager.inputtingAction();
         action.setTarget(index);
         var isForFriend = action.isForFriend();
-        action._multipleTargets = (action._multipleTargets || []).concat(isForFriend ? $gameParty.battleMembers()[index] : $gameTroop.members()[index]);
+        if (index >= 0) {
+            action._multipleTargets = (action._multipleTargets || []).concat(isForFriend ? $gameParty.battleMembers()[index] : $gameTroop.members()[index]);
+        }
         var item = action._item;
         var ability = item._dataClass === SKILL_DATA_CLASS ? $dataSkills[item._itemId] : $dataItems[item._itemId];
         var multipleTargets = ability.meta.multipleTargets;
