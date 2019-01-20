@@ -16,10 +16,13 @@ js/plugins/Community_Basic.js
 js/plugins/EnemyBook.js
 js/plugins/ItemBook.js
 js/plugins/MadeWithMv.js
+js/plugins/PrettyGauges.js
 js/plugins/SimpleMsgSideView.js
 js/plugins/TitleCommandPosition.js
 js/plugins/WeaponSkill.js
 js/plugins/YEP_BattleEngineCore.js
+js/plugins/YEP_SkillCore.js
+js/plugins/YEP_X_PartyLimitGauge.js
 js/plugins/YEP_X_VisualHpGauge.js
 js/rpg_core.js
 js/rpg_managers.js
