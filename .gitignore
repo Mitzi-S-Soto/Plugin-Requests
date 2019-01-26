@@ -18,6 +18,7 @@ js/plugins/ItemBook.js
 js/plugins/MadeWithMv.js
 js/plugins/PrettyGauges.js
 js/plugins/SimpleMsgSideView.js
+js/plugins/SRD_SkillExtender.js
 js/plugins/TitleCommandPosition.js
 js/plugins/WeaponSkill.js
 js/plugins/YEP_BattleEngineCore.js
