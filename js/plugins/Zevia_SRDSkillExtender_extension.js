@@ -31,7 +31,7 @@
         ZeviaSkillExtenderExtension.onSelectAction.apply(this, arguments);
     };
 
-    ZeviaSkillExtenderExtension = Scene_Skill.prototype.onItemOk;
+    ZeviaSkillExtenderExtension.onItemOk = Scene_Skill.prototype.onItemOk;
     Scene_Skill.prototype.onItemOk = function() {
         var item = this.item();
         if (item._se_extendSkills) {
@@ -39,6 +39,6 @@
             return;
         }
 
-        ZeviaSkillExtenderExtension.apply(this, arguments);
+        ZeviaSkillExtenderExtension.onItemOk.apply(this, arguments);
     };
 })(window);
