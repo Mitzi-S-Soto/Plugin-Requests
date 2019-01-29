@@ -69,7 +69,7 @@
 
     StateCombos.sparam = Game_BattlerBase.prototype.sparam;
     Game_BattlerBase.prototype.sparam = function(sparamId) {
-        return this.sparam.call(this, sparamId) * this.comboValue(SPARAMS, sparamId, 1);
+        return StateCombos.sparam.call(this, sparamId) * this.comboValue(SPARAMS, sparamId, 1);
     };
 
     StateCombos.endTurn = BattleManager.endTurn;
