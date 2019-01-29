@@ -1,17 +1,18 @@
 /*:
-* @plugindesc Allows for states to affect PARAM and EX-PARAM values only if being targeted by a user who also
-* has another state.
+* @plugindesc Allows for states to affect PARAM, EX-PARAM, and S-PARAM values only if being
+* targeted by a user who has a specified state.
 * @author Zevia
 *
 * @help In a state's notetag, put <stateCombo: stat, x, y>, where stat is the
-* PARAM or EX-PARAM to be affected, x is the percentage to affect it by,
+* PARAM, EX-PARAM, or S-PARAM to be affected, x is the percentage to affect it by,
 * and y is the state the user must have to apply the stat adjustment
 *
 * For example, <stateCombo: eva, -50, 4> means that if an Actor or Enemy has this
 * state, and someone with state 4 targets them, their evade will be decreased
 * by 50%.
 *
-* Keep in mind that EX-PARAMS are additive and PARAMS are multiplicative.
+* Keep in mind that EX-PARAMS are additive and PARAMS and S-PARAMS are
+* multiplicative.
 */
 
 (function(module) {
@@ -21,6 +22,7 @@
     var StateCombos = module.Zevia.StateCombos = {};
     var PARAMS = ['mhp', 'mmp', 'atk', 'def', 'mat', 'mdf', 'agi', 'luk'];
     var XPARAMS = ['hit', 'eva', 'cri', 'cev', 'mev', 'mrf', 'cnt', 'hrg', 'mrg', 'trg'];
+    var SPARAMS = ['tgr', 'grd', 'rec', 'pha', 'mcr', 'tcr', 'pdr', 'mdr', 'fdr', 'exr'];
 
     Game_BattlerBase.prototype.comboStates = function() {
         if (!this._comboSubject) { return []; }
@@ -63,6 +65,11 @@
     StateCombos.paramRate = Game_BattlerBase.prototype.paramRate;
     Game_BattlerBase.prototype.paramRate = function(paramId) {
         return StateCombos.paramRate.call(this, paramId) * this.comboValue(PARAMS, paramId, 1);
+    };
+
+    StateCombos.sparam = Game_BattlerBase.prototype.sparam;
+    Game_BattlerBase.prototype.sparam = function(sparamId) {
+        return this.sparam.call(this, sparamId) * this.comboValue(SPARAMS, sparamId, 1);
     };
 
     StateCombos.endTurn = BattleManager.endTurn;
