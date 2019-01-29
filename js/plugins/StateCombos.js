@@ -46,8 +46,8 @@
         return this.comboStates().filter(function(trait) {
             return (paramList.indexOf(trait.param) === paramId) && (this._comboSubject.isStateAffected(trait.subjectState));
         }.bind(this)).reduce(function(total, trait) {
-            if (baseValue === 0) { return total + trait.value; }
-            else { return total * trait.value; }
+            if (baseValue === 0) { return total + (trait.value * 0.01); }
+            else { return total * (trait.value * 0.01); }
         }, baseValue);
     };
 
