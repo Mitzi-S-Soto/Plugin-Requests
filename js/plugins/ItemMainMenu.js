@@ -50,6 +50,7 @@
     module.Zevia = module.Zevia || {};
     var ItemMainMenu = module.Zevia.ItemMainMenu = {};
     var STANDARD_PADDING = 5;
+    var NEW_LINE = '<br>';
     var parameters = PluginManager.parameters('ItemMainMenu');
     var descriptionWidth = parseInt(parameters.descriptionWidth);
     var descriptionHeight = parseInt(parameters.descriptionHeight);
@@ -70,14 +71,18 @@
 
     Window_Description.prototype.breakLines = function(text) {
         var maxWidth = this.width - 20 - (this.textPadding() * 2);
-        this._text = text.split(/\s+/g).reduce(function(lines, word) {
-            var line = lines[lines.length - 1];
-            var concatenated = line + (line ? ' ' : '') + word;
-
-            if (this.textWidth(concatenated) < maxWidth) {
-                lines[lines.length - 1] = concatenated;
+        this._text = text.replace(/\\n/g, ' ' + NEW_LINE + ' ').split(/\s+/g).reduce(function(lines, word) {
+            if (word === NEW_LINE) {
+                lines.push('');
             } else {
-                lines.push(word);
+                var line = lines[lines.length - 1];
+                var concatenated = line + (line ? ' ' : '') + word;
+
+                if (this.textWidth(concatenated) < maxWidth) {
+                    lines[lines.length - 1] = concatenated;
+                } else {
+                    lines.push(word);
+                }
             }
 
             return lines;
