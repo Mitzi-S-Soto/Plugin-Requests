@@ -13,6 +13,9 @@
 * description for an item is shown, pulled from the "longDesc" notetag on an
 * item. For example: <longDesc: This is a longer description>
 *
+* You can add line breaks by using a \n character. For example:
+* <longDesc: Title\n\n This is a long description for an item>
+*
 * Descriptions entered in the <longDesc> notetags for an item will automatically
 * wrap text to fit within the width of the window. Height is not accounted for.
 *
