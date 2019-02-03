@@ -14,7 +14,12 @@
 
     RemoveStatesByZeroDamage.executeHpDamage = Game_Action.prototype.executeHpDamage;
     Game_Action.prototype.executeHpDamage = function(target, value) {
-        target.removeStatesByDamage();
-        RemoveStatesByZeroDamage.executeHpDamage.call(this, target, value);
+        if (this.isDrain()) {
+            value = Math.min(target.hp, value);
+        }
+        this.makeSuccess(target);
+        target.gainHp(-value);
+        target.onDamage(value);
+        this.gainDrainedHp(value);
     };
 })(window);
