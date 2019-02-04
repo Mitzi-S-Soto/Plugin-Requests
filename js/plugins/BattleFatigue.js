@@ -79,13 +79,13 @@
 
     if (maximumPercentPenalty < fatiguePercent) {
         throw new Error(
-            'Configuration Error: Maximum Fatigue Percentage must be lower than the Fatigue Percentage.' +
+            'Configuration Error: Fatigue Percentage must be lower than the Maximum Fatigue Percentage.' +
             ' Check the Plugin Parameters for BattleFatigue'
         );
     }
     if (maximumValuePenalty < fatigueValue) {
         throw new Error(
-            'Configuration Error: Maximum Fatigue Value must be lower than the Fatigue Value.' +
+            'Configuration Error: Fatigue Value must be lower than the Maximum Fatigue Value.' +
             ' Check the Plugin Parameters for BattleFatigue'
         );
     }
