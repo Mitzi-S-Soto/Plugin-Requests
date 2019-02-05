@@ -18,9 +18,17 @@
 * Common events are added to a queue if an Enemy or Actor's death causes the
 * battle to end, such as when the last Enemy or Actor dies. This can sometimes
 * cause issues, like trying to refer to enemies when you're no longer in
-* battle. If you'd rather not have common events run after the last Enemy
-* or Actor in battle dies, you can turn off the "Run Common Events After Battle"
-* option.
+* battle. If you want a Death Common Event to run at the end of the Battle,
+* before the victory logic is processed, then turn Run At Battle End ON.
+* If you want it to run after the battle is over and you're returned to the
+* previous Scene, turn Run At Battle End OFF and turn ON Run After Battle End.
+*
+* If you'd rather not have common events run after the last Enemy or Actor in
+* battle dies, turn Run At Battle End AND Run After Battle End OFF.
+*
+* If Run At Battle End AND Run After Battle End are ON, then the common
+* event will only be called before victory and will not be called again
+* after battle.
 *
 * @param actorCommonEventId
 * @text Actor Death Common Event ID
@@ -76,11 +84,17 @@
 * @desc The variable used to store the type of the last action used. Values are "skill" or "item".
 * @default 7
 *
-* @param shouldRunAfterBattle
-* @text Run Common Events After Battle
+* @param shouldRunAtEndOfBattle
+* @text Run At Battle End
+* @desc Whether the death common events should be run when the last Enemy or Actor dies, before victory is processed.
 * @type boolean
-* @desc Whether the death common events should be run when the last Enemy or Actor dies.
 * @default true
+*
+* @param shouldRunAfterBattle
+* @text Run After Battle
+* @type boolean
+* @desc Whether the death common events should be run when the last Enemy or Actor dies, after the battle is over.
+* @default false
 */
 
 (function(module) {
@@ -100,9 +114,10 @@
     var actionId = parseInt(parameters.actionId);
     var actionType = parseInt(parameters.actionType);
     var shouldRunAfterBattle = !!parameters.shouldRunAfterBattle.match(/true/i);
+    var shouldRunAtEndOfBattle = !!parameters.shouldRunAtEndOfBattle.match(/true/i);
 
     DeathCommonEvent.shouldExecute = function(isActorDeath) {
-        return shouldRunAfterBattle || ((isActorDeath ? $gameParty.aliveMembers() : $gameTroop.aliveMembers()).length > 1);
+        return shouldRunAfterBattle || shouldRunAtEndOfBattle || ((isActorDeath ? $gameParty.aliveMembers() : $gameTroop.aliveMembers()).length > 1);
     };
 
     Game_BattlerBase.prototype.executeDeathCommonEvents = function() {
@@ -133,5 +148,11 @@
     Game_BattlerBase.prototype.die = function() {
         this.executeDeathCommonEvents();
         DeathCommonEvent.die.call(this);
+    };
+
+    DeathCommonEvent.processVictory = BattleManager.processVictory;
+    BattleManager.processVictory = function() {
+        if (shouldRunAtEndOfBattle && $gameTroop._interpreter.setupReservedCommonEvent()) { return; }
+        DeathCommonEvent.processVictory.call(this);
     };
 })(window);
