@@ -33,6 +33,10 @@
 * with an attackType of charging, they will have First Strike using
 * skill 1 (Attack by default).
 *
+* Declaring <firstStrike: all, x> will make that Actor, Class, Enemy,
+* Weapon, Armor, or State perform a First Strike against all attackers,
+* regardless of attackTypes.
+*
 * First Strike is not cumulative and instead takes a priority approach.
 * Battlers will use the first First Strike category and skill ID
 * according to the following list:
