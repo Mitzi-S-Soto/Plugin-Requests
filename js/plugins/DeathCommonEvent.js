@@ -44,43 +44,43 @@
 *
 * @param targetId
 * @text Target ID Variable
-* @type number
+* @type variable
 * @desc The variable used to store the ID of the battler that just died.
 * @default 1
 *
 * @param targetIndex
 * @text Target Index Variable
-* @type number
+* @type variable
 * @desc The variable used to store the index in the battle party or troop of the battler that just died.
 * @default 2
 *
 * @param targetStates
 * @text Target States Variable
-* @type number
+* @type variable
 * @desc The variable used to store the list of states of the battler just before they died.
 * @default 3
 *
 * @param subjectId
 * @text Subject ID Variable
-* @type number
+* @type variable
 * @desc The variable used to store the ID of the battler that just acted.
 * @default 4
 *
 * @param subjectIndex
 * @text Subject Index Variable
-* @type number
+* @type variable
 * @desc The variable used to store the index in the battle party or troop of the battler that just acted.
 * @default 5
 *
 * @param actionId
 * @text Last Action ID Variable
-* @type number
+* @type variable
 * @desc The variable used to store the ID of the last skill or item used before the battler died.
 * @default 6
 *
 * @param actionType
 * @text Last Action Type Variable
-* @type string
+* @type variable
 * @desc The variable used to store the type of the last action used. Values are "skill" or "item".
 * @default 7
 *
