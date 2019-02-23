@@ -17,6 +17,23 @@
 * @desc Whether target indicators appear over Sprites with each selection made
 * @type boolean
 * @default false
+*
+* @param gradients
+* @text Color Gradients
+* @desc These gradients are used, in order, for each selected target. Once all have been used, they will loop to the beginning again.
+* @type struct<GradientColor>[]
+* @default ["{\"colorOne\":\"#E50027\",\"colorTwo\":\"#BF7300\"}","{\"colorOne\":\"#45E500\",\"colorTwo\":\"#12CA48\"}","{\"colorOne\":\"#007DE5\",\"colorTwo\":\"#0147CB\"}"]
+*/
+/*~struct~GradientColor:
+* @param colorOne
+* @text Color 1
+* @desc The color for the top of an indicator triangle, as a hex value (format: #xxyyzz)
+* @type String
+*
+* @param colorTwo
+* @text Color 2
+* @desc The color for the bottom of an indicator triangle, as a hex value (format: #xxyyzz)
+* @type String
 */
 
 (function(module) {
@@ -33,12 +50,9 @@
     module.Zevia = module.Zevia || {};
     var TRIANGLE_WIDTH = 36;
     var SKILL_DATA_CLASS = 'skill';
-    var INDEX_GRADIENTS = [
-        ['#E50027', '#BF7300'],
-        ['#45E500', '#12CA48'],
-        ['#007DE5', '#0147CB']
-    ];
-    var shouldUseIndicators = !!PluginManager.parameters('SelectMultipleTargets').shouldUseIndicators.match(/true/i);
+    var parameters = PluginManager.parameters('SelectMultipleTargets');
+    var gradients = JSON.parse(parameters.gradients);
+    var shouldUseIndicators = parameters.shouldUseIndicators.match(/true/i);
 
     var Window_Indicator = module.Zevia.Window_Indicator = function() {
         this.initialize.apply(this, arguments);
@@ -81,9 +95,9 @@
     Window_Indicator.prototype.drawTriangle = function(indicator, index) {
         var ctx = this.contents._context;
         var gradient = ctx.createLinearGradient(0, 0, 0, this.windowHeight());
-        var colors = INDEX_GRADIENTS[indicator % 3];
-        gradient.addColorStop(0, colors[0]);
-        gradient.addColorStop(0.5, colors[1]);
+        var colors = JSON.parse(gradients[(indicator - 1) % gradients.length]);
+        gradient.addColorStop(0, colors.colorOne);
+        gradient.addColorStop(0.6, colors.colorTwo);
         ctx.fillStyle = gradient;
         var x = (this.triangleWidth() / 2) * index;
         ctx.beginPath();
