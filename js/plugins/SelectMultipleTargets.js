@@ -9,6 +9,9 @@
 * affect and allow selection for. For example, if you put <multipleTargets: 4>,
 * then the skill will let you select 4 targets.
 *
+* If using the Indicators, they will not show up on Actors unless you've enabled
+* side view in the System settings.
+
 * @param shouldUseIndicators
 * @text Use Selection Indicators
 * @desc Whether target indicators appear over Sprites with each selection made
@@ -28,6 +31,7 @@
     };
 
     module.Zevia = module.Zevia || {};
+    var TRIANGLE_WIDTH = 36;
     var SKILL_DATA_CLASS = 'skill';
     var INDEX_GRADIENTS = [
         ['#E50027', '#BF7300'],
@@ -50,13 +54,13 @@
     };
 
     Window_Indicator.prototype.triangleWidth = function() {
-        return 36;
+        return TRIANGLE_WIDTH;
     };
     Window_Indicator.prototype.windowWidth = function() {
         return this._indicators.length * this.triangleWidth();
     };
     Window_Indicator.prototype.windowHeight = function() {
-        return 31;
+        return TRIANGLE_WIDTH - 5;
     };
     Window_Indicator.prototype.standardPadding = function() {
         return 0;
@@ -139,26 +143,26 @@
             return;
         }
 
-        if (shouldUseIndicators) {
-            var targetSprite = this._spriteset[(isForFriend ? '_actorSprites' : '_enemySprites')].find(function(sprite) {
-                return sprite._battler.index() === index;
-            });
-            var indicators = isForFriend ? '_actorIndicators' : '_enemyIndicators';
-            var indicatorWindow = this[indicators][index];
-            if (indicatorWindow) {
-                indicatorWindow.addIndicator(action._multipleTargets.length);
-            } else {
-                var mainSprite = isForFriend ? targetSprite._mainSprite : targetSprite;
-                indicatorWindow = new module.Zevia.Window_Indicator(
-                    targetSprite.x - (mainSprite.width / 2) + (isForFriend ? 15 : 36),
-                    targetSprite.y - mainSprite.height - 36,
-                    action._multipleTargets.length
-                );
-                this[indicators][index] = indicatorWindow;
-                this.addWindow(indicatorWindow);
-            }
-        }
         activeWindow.activate();
+        if (!shouldUseIndicators || (!$gameSystem.isSideView() && isForFriend)) { return; }
+
+        var targetSprite = this._spriteset[(isForFriend ? '_actorSprites' : '_enemySprites')].find(function(sprite) {
+            return sprite._battler.index() === index;
+        });
+        var indicators = isForFriend ? '_actorIndicators' : '_enemyIndicators';
+        var indicatorWindow = this[indicators][index];
+        if (indicatorWindow) {
+            indicatorWindow.addIndicator(action._multipleTargets.length);
+        } else {
+            var mainSprite = isForFriend ? targetSprite._mainSprite : targetSprite;
+            indicatorWindow = new module.Zevia.Window_Indicator(
+                targetSprite.x - (TRIANGLE_WIDTH / 2),
+                targetSprite.y - mainSprite.height - TRIANGLE_WIDTH,
+                action._multipleTargets.length
+            );
+            this[indicators][index] = indicatorWindow;
+            this.addWindow(indicatorWindow);
+        }
     };
 
     SelectMultipleTargets.initializeBattle = Scene_Battle.prototype.initialize;
