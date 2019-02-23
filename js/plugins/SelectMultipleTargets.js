@@ -20,7 +20,7 @@
 *
 * @param gradients
 * @text Color Gradients
-* @desc These gradients are used, in order, for each selected target. Once all have been used, they will loop to the beginning again.
+* @desc These gradients are used, in order, for each selected target. Once all have been used, they'll start over.
 * @type struct<GradientColor>[]
 * @default ["{\"colorOne\":\"#E50027\",\"colorTwo\":\"#BF7300\"}","{\"colorOne\":\"#45E500\",\"colorTwo\":\"#12CA48\"}","{\"colorOne\":\"#007DE5\",\"colorTwo\":\"#0147CB\"}"]
 */
